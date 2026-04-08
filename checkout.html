@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Оформление заявки - WebRent</title>
+    <link rel="stylesheet" href="./assets/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-row">
+        <a class="logo" href="./index.html">WebRent</a>
+        <nav class="main-nav" aria-label="Основная навигация">
+          <a href="./index.html">Главная</a>
+          <a href="./catalog.html">Каталог</a>
+          <a href="./about.html">Условия аренды</a>
+          <a href="./contacts.html">Контакты</a>
+          <a class="btn btn-sm active" href="./checkout.html">Оформить заявку</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="section">
+      <div class="container">
+        <nav class="breadcrumbs" aria-label="Хлебные крошки">
+          <a href="./index.html">Главная</a> /
+          <span>Оформление заявки</span>
+        </nav>
+
+        <h1>Оформление заявки</h1>
+        <p class="lead">
+          Заполни короткую форму: даты аренды, количество и контактные данные.
+        </p>
+
+        <form id="checkoutForm" class="card form-grid">
+          <label>
+            Инструмент
+            <input type="text" name="tool" value="Bosch GBH 2-26" required />
+          </label>
+          <label>
+            Дата начала
+            <input type="date" name="startDate" required />
+          </label>
+          <label>
+            Дата окончания
+            <input type="date" name="endDate" required />
+          </label>
+          <label>
+            Количество
+            <input type="number" name="qty" min="1" value="1" required />
+          </label>
+          <label>
+            Имя
+            <input type="text" name="name" required />
+          </label>
+          <label>
+            Телефон
+            <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" required />
+          </label>
+          <label class="full-width">
+            Комментарий
+            <textarea name="comment" rows="3" placeholder="Уточнения по заказу"></textarea>
+          </label>
+          <button class="btn full-width" type="submit">Подтвердить заявку</button>
+        </form>
+        <p id="checkoutStatus" class="status-text" aria-live="polite"></p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-row">
+        <p>© 2026 WebRent</p>
+        <div class="footer-links">
+          <a href="./about.html">Условия аренды</a>
+          <a href="./contacts.html">Контакты</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./assets/app.js"></script>
+  </body>
+</html>

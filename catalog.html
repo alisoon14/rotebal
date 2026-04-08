@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Каталог - WebRent</title>
+    <link rel="stylesheet" href="./assets/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-row">
+        <a class="logo" href="./index.html">WebRent</a>
+        <nav class="main-nav" aria-label="Основная навигация">
+          <a href="./index.html">Главная</a>
+          <a class="active" href="./catalog.html">Каталог</a>
+          <a href="./about.html">Условия аренды</a>
+          <a href="./contacts.html">Контакты</a>
+          <a class="btn btn-sm" href="./checkout.html">Оформить заявку</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="section">
+      <div class="container">
+        <nav class="breadcrumbs" aria-label="Хлебные крошки">
+          <a href="./index.html">Главная</a> / <span>Каталог</span>
+        </nav>
+        <h1>Каталог инструментов</h1>
+        <p class="lead">
+          Используй поиск, фильтры и сортировку, чтобы быстро найти нужный
+          инструмент.
+        </p>
+
+        <section class="catalog-layout">
+          <aside class="card filters">
+            <h2>Фильтры</h2>
+            <label>
+              Поиск
+              <input id="searchInput" type="search" placeholder="Например, перфоратор" />
+            </label>
+            <label>
+              Категория
+              <select id="categoryFilter">
+                <option value="all">Все категории</option>
+                <option value="drill">Сверление</option>
+                <option value="cut">Резка</option>
+                <option value="garden">Сад</option>
+                <option value="grind">Шлифовка</option>
+              </select>
+            </label>
+            <label>
+              Доступность
+              <select id="availabilityFilter">
+                <option value="all">Любая</option>
+                <option value="available">Только в наличии</option>
+              </select>
+            </label>
+            <label>
+              Сортировка
+              <select id="sortFilter">
+                <option value="popular">По популярности</option>
+                <option value="priceAsc">Цена: по возрастанию</option>
+                <option value="priceDesc">Цена: по убыванию</option>
+              </select>
+            </label>
+          </aside>
+
+          <section>
+            <div id="catalogCount" class="catalog-count"></div>
+            <div id="catalogGrid" class="cards-3"></div>
+          </section>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-row">
+        <p>© 2026 WebRent</p>
+        <div class="footer-links">
+          <a href="./about.html">Условия аренды</a>
+          <a href="./contacts.html">Контакты</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./assets/app.js"></script>
+  </body>
+</html>
