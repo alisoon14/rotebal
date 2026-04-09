@@ -9,6 +9,17 @@
   --border: #26324a;
 }
 
+body.theme-light {
+  --bg: #f1f5f9;
+  --panel: #ffffff;
+  --panel-soft: #e2e8f0;
+  --text: #0f172a;
+  --text-muted: #475569;
+  --accent: #22c55e;
+  --accent-2: #16a34a;
+  --border: #cbd5e1;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -22,6 +33,10 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+body.theme-light {
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
 }
 
 main {
@@ -150,6 +165,7 @@ h3 {
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 1rem;
+  position: relative;
 }
 
 .features,
@@ -230,6 +246,122 @@ textarea {
 .catalog-count {
   color: var(--text-muted);
   margin-bottom: 0.8rem;
+}
+
+.catalog-status {
+  color: var(--text-muted);
+  margin-bottom: 0.8rem;
+  min-height: 1.5rem;
+}
+
+.loader-dot {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-right: 0.45rem;
+  animation: pulse 1s infinite;
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(15, 23, 42, 0.45);
+  color: #f8fafc;
+  cursor: pointer;
+}
+
+.favorite-btn.is-active {
+  color: #facc15;
+  border-color: #facc15;
+}
+
+body.theme-light .favorite-btn {
+  background: rgba(255, 255, 255, 0.9);
+  color: #334155;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.quick-view-btn {
+  color: var(--text);
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.65);
+  display: grid;
+  place-items: center;
+  z-index: 40;
+  padding: 1rem;
+}
+
+.modal-card {
+  width: min(560px, 100%);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1rem;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  border-radius: 8px;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+}
+
+.back-to-top {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 30;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.55rem 0.9rem;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.4;
+  }
 }
 
 .specs {
