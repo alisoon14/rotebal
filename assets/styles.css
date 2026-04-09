@@ -171,14 +171,25 @@ h3 {
 
 .tool-image,
 .tool-photo,
-.map-box {
+.map-box,
+.image-placeholder {
+  width: 100%;
   min-height: 180px;
-  display: grid;
-  place-content: center;
   border-radius: 10px;
   border: 1px dashed #3b4a67;
-  color: var(--text-muted);
+  background: rgba(15, 23, 42, 0.35);
+  display: block;
+  object-fit: cover;
+}
+
+.tool-image,
+.tool-photo,
+.map-box {
   margin-bottom: 0.8rem;
+}
+
+.image-placeholder {
+  margin: 1rem 0;
 }
 
 .breadcrumbs {

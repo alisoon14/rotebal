@@ -10,7 +10,7 @@ const tools = [
 function toolCard(tool) {
   return `
     <article class="tool-card">
-      <div class="tool-image">${tool.category}</div>
+      <img class="tool-image" src="./assets/images/placeholder.svg" alt="Заглушка изображения: ${tool.name}" />
       <h3>${tool.name}</h3>
       <p>${tool.price.toLocaleString("ru-RU")} руб/сутки</p>
       <p>${tool.available ? "В наличии" : "Нет в наличии"}</p>
