@@ -1,14 +1,15 @@
 const tools = [
-  { name: "Bosch GBH 2-26", price: 1200, category: "drill", available: true, popularity: 90 },
-  { name: "Makita BO6050J", price: 900, category: "grind", available: false, popularity: 84 },
-  { name: "STIHL MS 180", price: 1100, category: "garden", available: false, popularity: 79 },
-  { name: "DeWALT DWD024", price: 800, category: "drill", available: true, popularity: 73 },
-  { name: "Makita GA5030", price: 700, category: "cut", available: false, popularity: 68 },
-  { name: "Husqvarna 135 Mark II", price: 1300, category: "garden", available: true, popularity: 81 }
+  { name: "Bosch GBH 2-26", price: 1200, deposit: 6000, category: "drill", available: true, popularity: 90 },
+  { name: "Makita BO6050J", price: 900, deposit: 4500, category: "grind", available: false, popularity: 84 },
+  { name: "STIHL MS 180", price: 1100, deposit: 5000, category: "garden", available: false, popularity: 79 },
+  { name: "DeWALT DWD024", price: 800, deposit: 3500, category: "drill", available: true, popularity: 73 },
+  { name: "Makita GA5030", price: 700, deposit: 3000, category: "cut", available: false, popularity: 68 },
+  { name: "Husqvarna 135 Mark II", price: 1300, deposit: 6200, category: "garden", available: true, popularity: 81 }
 ];
 
 const FAVORITES_KEY = "webrent:favorites";
 const THEME_KEY = "webrent:theme";
+const ORDERS_KEY = "webrent:orders";
 
 function loadFavorites() {
   try {
@@ -37,7 +38,7 @@ function toolCard(tool) {
       >
         ${isFavorite ? "★" : "☆"}
       </button>
-      <img class="tool-image" src="./assets/images/placeholder.svg" alt="Заглушка изображения: ${tool.name}" />
+      <img class="tool-image" src="./assets/images/placeholder.svg" alt="Фото инструмента ${tool.name}" />
       <h3>${tool.name}</h3>
       <p>${tool.price.toLocaleString("ru-RU")} руб/сутки</p>
       <p>${tool.available ? "В наличии" : "Нет в наличии"}</p>
@@ -175,10 +176,161 @@ function initCheckoutPage() {
   if (!form) return;
 
   const status = document.getElementById("checkoutStatus");
+  const thankYouScreen = document.getElementById("thankYouScreen");
+  const startDateInput = form.querySelector('input[name="startDate"]');
+  const endDateInput = form.querySelector('input[name="endDate"]');
+  const qtyInput = form.querySelector('input[name="qty"]');
+  const toolInput = form.querySelector('input[name="tool"]');
+  const phoneInput = form.querySelector('input[name="phone"]');
+  const dailyPriceText = document.getElementById("dailyPriceText");
+  const depositText = document.getElementById("depositText");
+  const rentalDaysText = document.getElementById("rentalDaysText");
+  const totalCostText = document.getElementById("totalCostText");
+
+  function normalizeDate(dateString) {
+    const [year, month, day] = dateString.split("-").map(Number);
+    return new Date(year, month - 1, day);
+  }
+
+  function diffDays(startDate, endDate) {
+    const millisPerDay = 1000 * 60 * 60 * 24;
+    return Math.floor((endDate - startDate) / millisPerDay) + 1;
+  }
+
+  function getSelectedTool() {
+    const byName = tools.find((item) => item.name === toolInput.value.trim());
+    return byName || tools[0];
+  }
+
+  function formatCurrency(value) {
+    return `${Math.max(0, value).toLocaleString("ru-RU")} руб`;
+  }
+
+  function isDateRangeValid() {
+    if (!startDateInput.value || !endDateInput.value) return false;
+    const start = normalizeDate(startDateInput.value);
+    const end = normalizeDate(endDateInput.value);
+    return end >= start;
+  }
+
+  function getRentalDays() {
+    if (!isDateRangeValid()) return 0;
+    return diffDays(normalizeDate(startDateInput.value), normalizeDate(endDateInput.value));
+  }
+
+  function updateCostSummary() {
+    const currentTool = getSelectedTool();
+    const qty = Math.max(1, Number(qtyInput.value) || 1);
+    const days = getRentalDays();
+    const baseCost = days * currentTool.price * qty;
+    const total = baseCost + currentTool.deposit;
+
+    dailyPriceText.textContent = formatCurrency(currentTool.price);
+    depositText.textContent = formatCurrency(currentTool.deposit);
+    rentalDaysText.textContent = `${days} ${days === 1 ? "сутки" : "суток"}`;
+    totalCostText.textContent = formatCurrency(total);
+  }
+
+  function setFieldError(input, message) {
+    input.setCustomValidity(message);
+    if (message) input.setAttribute("aria-invalid", "true");
+    else input.removeAttribute("aria-invalid");
+  }
+
+  function applyPhoneMask(value) {
+    const digits = value.replace(/\D/g, "").replace(/^8/, "7");
+    const normalized = digits.startsWith("7") ? digits : `7${digits}`;
+    const limited = normalized.slice(0, 11);
+
+    let result = "+7";
+    if (limited.length > 1) result += ` (${limited.slice(1, 4)}`;
+    if (limited.length >= 4) result += ")";
+    if (limited.length > 4) result += ` ${limited.slice(4, 7)}`;
+    if (limited.length > 7) result += `-${limited.slice(7, 9)}`;
+    if (limited.length > 9) result += `-${limited.slice(9, 11)}`;
+    return result;
+  }
+
+  function isPhoneValid(value) {
+    return /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/.test(value);
+  }
+
+  function validateDates() {
+    const hasStart = Boolean(startDateInput.value);
+    const hasEnd = Boolean(endDateInput.value);
+    if (!hasStart || !hasEnd) {
+      setFieldError(endDateInput, "");
+      return;
+    }
+    if (!isDateRangeValid()) {
+      setFieldError(endDateInput, "Дата окончания не может быть раньше даты начала.");
+    } else {
+      setFieldError(endDateInput, "");
+    }
+  }
+
+  function saveOrderLocal(order) {
+    try {
+      const existing = JSON.parse(localStorage.getItem(ORDERS_KEY) || "[]");
+      existing.push(order);
+      localStorage.setItem(ORDERS_KEY, JSON.stringify(existing));
+    } catch {
+      status.textContent = "Не удалось сохранить заявку локально.";
+    }
+  }
+
+  [startDateInput, endDateInput, qtyInput, toolInput].forEach((input) => {
+    input.addEventListener("input", () => {
+      validateDates();
+      updateCostSummary();
+    });
+    input.addEventListener("change", () => {
+      validateDates();
+      updateCostSummary();
+    });
+  });
+
+  phoneInput.addEventListener("input", () => {
+    phoneInput.value = applyPhoneMask(phoneInput.value);
+    setFieldError(phoneInput, isPhoneValid(phoneInput.value) ? "" : "Введите номер в формате +7 (999) 123-45-67.");
+  });
+
+  updateCostSummary();
+
   form.addEventListener("submit", (event) => {
     event.preventDefault();
+    validateDates();
+    updateCostSummary();
+
+    if (!isPhoneValid(phoneInput.value)) {
+      setFieldError(phoneInput, "Введите номер в формате +7 (999) 123-45-67.");
+    } else {
+      setFieldError(phoneInput, "");
+    }
+
+    if (!form.reportValidity()) return;
+
+    const tool = getSelectedTool();
+    const rentalDays = getRentalDays();
+    const qty = Math.max(1, Number(qtyInput.value) || 1);
+    const selectedFulfillment = form.querySelector('input[name="fulfillment"]:checked')?.value || "pickup";
+    const orderPayload = {
+      toolName: tool.name,
+      startDate: startDateInput.value,
+      endDate: endDateInput.value,
+      quantity: qty,
+      customerName: form.querySelector('input[name="name"]').value.trim(),
+      phone: phoneInput.value,
+      comment: form.querySelector('textarea[name="comment"]').value.trim(),
+      fulfillment: selectedFulfillment,
+      totalCost: rentalDays * tool.price * qty + tool.deposit
+    };
+
+    saveOrderLocal({ id: Date.now(), ...orderPayload });
     status.textContent = "Заявка принята. Мы свяжемся с вами в ближайшее время.";
-    form.reset();
+
+    form.hidden = true;
+    thankYouScreen.hidden = false;
   });
 }
 

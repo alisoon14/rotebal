@@ -34,41 +34,70 @@
         <img
           class="image-placeholder"
           src="./assets/images/placeholder.svg"
-          alt="Заглушка изображения: оформление заявки"
+          alt="Сотрудник оформляет заявку на аренду инструмента"
         />
 
-        <form id="checkoutForm" class="card form-grid">
-          <label>
-            Инструмент
-            <input type="text" name="tool" value="Bosch GBH 2-26" required />
-          </label>
-          <label>
-            Дата начала
-            <input type="date" name="startDate" required />
-          </label>
-          <label>
-            Дата окончания
-            <input type="date" name="endDate" required />
-          </label>
-          <label>
-            Количество
-            <input type="number" name="qty" min="1" value="1" required />
-          </label>
-          <label>
-            Имя
-            <input type="text" name="name" required />
-          </label>
-          <label>
-            Телефон
-            <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" required />
-          </label>
-          <label class="full-width">
-            Комментарий
-            <textarea name="comment" rows="3" placeholder="Уточнения по заказу"></textarea>
-          </label>
+        <form id="checkoutForm" class="card form-grid" novalidate>
+          <label for="tool">Инструмент</label>
+          <input id="tool" type="text" name="tool" value="Bosch GBH 2-26" required />
+
+          <label for="startDate">Дата начала</label>
+          <input id="startDate" type="date" name="startDate" required />
+
+          <label for="endDate">Дата окончания</label>
+          <input id="endDate" type="date" name="endDate" required />
+
+          <label for="qty">Количество</label>
+          <input id="qty" type="number" name="qty" min="1" value="1" required />
+
+          <label for="pickupMethod">Способ получения</label>
+          <fieldset id="pickupMethod" class="radio-group">
+            <legend class="visually-hidden">Способ получения</legend>
+            <label class="radio-item">
+              <input type="radio" name="fulfillment" value="pickup" checked />
+              Самовывоз
+            </label>
+            <label class="radio-item">
+              <input type="radio" name="fulfillment" value="delivery" />
+              Доставка
+            </label>
+          </fieldset>
+
+          <label for="name">Имя</label>
+          <input id="name" type="text" name="name" autocomplete="name" required />
+
+          <label for="phone">Телефон</label>
+          <input
+            id="phone"
+            type="tel"
+            name="phone"
+            placeholder="+7 (___) ___-__-__"
+            autocomplete="tel"
+            inputmode="tel"
+            required
+            aria-describedby="phoneHelp"
+          />
+          <p id="phoneHelp" class="field-help">Формат: +7 (999) 123-45-67</p>
+
+          <label class="full-width" for="comment">Комментарий</label>
+          <textarea id="comment" name="comment" rows="3" placeholder="Уточнения по заказу"></textarea>
+
+          <section class="card total-card full-width" aria-live="polite">
+            <h2>Расчет стоимости</h2>
+            <p>Цена за сутки: <strong id="dailyPriceText">1 200 руб</strong></p>
+            <p>Залог: <strong id="depositText">6 000 руб</strong></p>
+            <p>Срок аренды: <strong id="rentalDaysText">0 суток</strong></p>
+            <p>Итог: <strong id="totalCostText">0 руб</strong></p>
+          </section>
+
           <button class="btn full-width" type="submit">Подтвердить заявку</button>
         </form>
         <p id="checkoutStatus" class="status-text" aria-live="polite"></p>
+        <section id="thankYouScreen" class="card thank-you-screen" hidden aria-live="polite">
+          <h2>Спасибо за заявку!</h2>
+          <p>Мы получили ваш запрос и свяжемся с вами в ближайшее время.</p>
+          <a class="btn btn-sm" href="./catalog.html">Вернуться в каталог</a>
+        </section>
       </div>
     </main>
 

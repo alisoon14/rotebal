@@ -3,7 +3,7 @@
   --panel: #121a2b;
   --panel-soft: #162136;
   --text: #e5e7eb;
-  --text-muted: #9ca3af;
+  --text-muted: #cbd5e1;
   --accent: #22c55e;
   --accent-2: #4ade80;
   --border: #26324a;
@@ -14,7 +14,7 @@ body.theme-light {
   --panel: #ffffff;
   --panel-soft: #e2e8f0;
   --text: #0f172a;
-  --text-muted: #475569;
+  --text-muted: #334155;
   --accent: #22c55e;
   --accent-2: #16a34a;
   --border: #cbd5e1;
@@ -46,6 +46,15 @@ main {
 a {
   color: var(--text);
   text-decoration: none;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #facc15;
+  outline-offset: 2px;
 }
 
 .container {
@@ -86,6 +95,10 @@ a {
   padding: 0.45rem 0.7rem;
   border-radius: 10px;
   color: var(--text-muted);
+}
+
+.main-nav a:hover {
+  color: var(--text);
 }
 
 .main-nav a.active {
@@ -228,7 +241,7 @@ h3 {
   display: block;
   margin-bottom: 0.7rem;
   font-weight: 600;
-  color: #d1d5db;
+  color: var(--text);
 }
 
 input,
@@ -373,6 +386,7 @@ body.theme-light .favorite-btn {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
+  align-items: start;
 }
 
 .full-width {
@@ -383,6 +397,56 @@ body.theme-light .favorite-btn {
   margin-top: 0.8rem;
   font-weight: 700;
   color: #bbf7d0;
+}
+
+.field-help {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.radio-group {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.65rem;
+  margin: 0 0 0.7rem;
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.radio-item:last-child {
+  margin-bottom: 0;
+}
+
+.radio-item input {
+  margin: 0;
+  width: auto;
+}
+
+.total-card h2 {
+  font-size: 1.05rem;
+}
+
+.thank-you-screen {
+  margin-top: 1rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 
 .site-footer {
