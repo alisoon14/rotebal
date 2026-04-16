@@ -1,10 +1,10 @@
 const tools = [
-  { name: "Bosch GBH 2-26", price: 1200, deposit: 6000, category: "drill", available: true, popularity: 90 },
-  { name: "Makita BO6050J", price: 900, deposit: 4500, category: "grind", available: false, popularity: 84 },
-  { name: "STIHL MS 180", price: 1100, deposit: 5000, category: "garden", available: false, popularity: 79 },
-  { name: "DeWALT DWD024", price: 800, deposit: 3500, category: "drill", available: true, popularity: 73 },
-  { name: "Makita GA5030", price: 700, deposit: 3000, category: "cut", available: false, popularity: 68 },
-  { name: "Husqvarna 135 Mark II", price: 1300, deposit: 6200, category: "garden", available: true, popularity: 81 }
+  { name: "Bosch GBH 2-26", price: 1200, deposit: 6000, category: "drill", available: true, popularity: 90, image: "./assets/images/Bosch_GBH_2-26jpg.jpg"},
+  { name: "Makita BO6050J", price: 900, deposit: 4500, category: "grind", available: false, popularity: 84, image: "./assets/images/Makita_BO6050J.jpg"},
+  { name: "STIHL MS 180", price: 1100, deposit: 5000, category: "garden", available: false, popularity: 79, image: "./assets/images/STIHL_MS_180.jpg" },
+  { name: "DeWALT DWD024", price: 800, deposit: 3500, category: "drill", available: true, popularity: 73, image:"./assets/images/DeWALT_DWD024.jpg" },
+  { name: "Makita GA5030", price: 700, deposit: 3000, category: "cut", available: false, popularity: 68,image:"./assets/images/makita_ga5030.jpg" },
+  { name: "Husqvarna 135 Mark II", price: 1300, deposit: 6200, category: "garden", available: true, popularity: 81,image: "./assets/images/Husqvarna_135.jpg" }
 ];
 
 const FAVORITES_KEY = "webrent:favorites";
@@ -38,7 +38,11 @@ function toolCard(tool) {
       >
         ${isFavorite ? "★" : "☆"}
       </button>
-      <img class="tool-image" src="./assets/images/placeholder.svg" alt="Фото инструмента ${tool.name}" />
+      <img
+        class="tool-image"
+        src="${tool.image || "./assets/images/placeholder.svg"}"
+        alt="Фото инструмента ${tool.name}"
+      />
       <h3>${tool.name}</h3>
       <p>${tool.price.toLocaleString("ru-RU")} руб/сутки</p>
       <p>${tool.available ? "В наличии" : "Нет в наличии"}</p>
@@ -88,7 +92,11 @@ function initCatalogPage() {
     modal.innerHTML = `
       <div class="modal-card" role="dialog" aria-modal="true" aria-label="Быстрый просмотр">
         <button type="button" class="modal-close" data-close-modal aria-label="Закрыть">×</button>
-        <img class="tool-image" src="./assets/images/placeholder.svg" alt="Заглушка изображения: ${tool.name}" />
+        <img
+          class="tool-image"
+          src="${tool.image || "./assets/images/placeholder.svg"}"
+          alt="Фото инструмента ${tool.name}"
+        />
         <h3>${tool.name}</h3>
         <p><strong>Цена:</strong> ${tool.price.toLocaleString("ru-RU")} руб/сутки</p>
         <p><strong>Статус:</strong> ${tool.available ? "В наличии" : "Нет в наличии"}</p>
